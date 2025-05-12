@@ -1,0 +1,81 @@
+<section id="contacto" class="py-10 px-6 bg-gray-50">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start">
+    
+    <!-- Formulario -->
+    <form [formGroup]="contactForm" (ngSubmit)="enviarFormulario()" class="space-y-6 w-full" novalidate>
+      <h2 class="text-3xl font-bold text-blue-800">¡Comunícate ahora!</h2>
+
+      <!-- Nombre -->
+      <div>
+        <label class="block mb-1 text-gray-700 font-medium">Nombre</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+          [class.border-red-500]="contactForm.get('nombre')?.invalid && contactForm.get('nombre')?.touched"
+        />
+        <p *ngIf="contactForm.get('nombre')?.hasError('required') && contactForm.get('nombre')?.touched" class="text-sm text-red-600 mt-1">
+          El nombre es obligatorio.
+        </p>
+      </div>
+
+      <!-- Correo -->
+      <div>
+        <label class="block mb-1 text-gray-700 font-medium">Correo</label>
+        <input
+          type="email"
+          formControlName="correo"
+          class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          [class.border-red-500]="contactForm.get('correo')?.invalid && contactForm.get('correo')?.touched"
+        />
+        <p *ngIf="contactForm.get('correo')?.hasError('required') && contactForm.get('correo')?.touched" class="text-sm text-red-600 mt-1">
+          El correo es obligatorio.
+        </p>
+        <p *ngIf="contactForm.get('correo')?.hasError('email') && contactForm.get('correo')?.touched" class="text-sm text-red-600 mt-1">
+          El formato del correo no es válido.
+        </p>
+      </div>
+
+      <!-- Mensaje -->
+      <div>
+        <label class="block mb-1 text-gray-700 font-medium">Mensaje</label>
+        <textarea
+          rows="4"
+          formControlName="mensaje"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+          [class.border-red-500]="contactForm.get('mensaje')?.invalid && contactForm.get('mensaje')?.touched">
+        </textarea>
+        <p *ngIf="contactForm.get('mensaje')?.hasError('required') && contactForm.get('mensaje')?.touched" class="text-sm text-red-600 mt-1">
+          El mensaje es obligatorio.
+        </p>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" [disabled]="contactForm.invalid"
+              class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
+        Enviar mensaje
+      </button>
+
+      <!-- Toast -->
+      <div
+        class="mt-4 w-full text-center px-6 py-3 rounded-lg text-white shadow-md transition-all duration-500 ease-in-out"
+        [ngClass]="{
+          'bg-green-600': toastType === 'success',
+          'bg-red-600': toastType === 'error',
+          'opacity-100 translate-y-0 visible': toastVisible,
+          'opacity-0 translate-y-2 invisible': !toastVisible
+        }">
+        {{ toastMessage }}
+      </div>
+    </form>
+
+    <!-- Mapa -->
+    <div class="w-full h-72 md:h-full rounded-xl overflow-hidden shadow-md">
+      <iframe
+        class="w-full h-full"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15952.485196187208!2d-78.6434935!3d-1.671168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d3a82edf66b099%3A0x92b32e5882dd6d29!2sMercado%20La%20Merced!5e0!3m2!1ses-419!2sec!4v1746064317441!5m2!1ses-419!2sec"
+        loading="lazy" allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>

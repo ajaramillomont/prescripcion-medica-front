@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@import "tailwindcss";
+@tailwind utilities;

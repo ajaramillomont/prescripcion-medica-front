@@ -1,0 +1,117 @@
+<div class="p-6 space-y-6 max-w-7xl mx-auto">
+
+  <h1 class="text-3xl font-bold text-blue-700">Gestión de Pacientes</h1>
+
+  <!-- Buscar -->
+  <div class="bg-white p-4 rounded shadow">
+    <input
+      type="text"
+      [(ngModel)]="filtro"
+      placeholder="🔍 Buscar por nombre o cédula"
+      class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+
+  <!-- Formulario -->
+  <div #formularioRef class="bg-white p-6 rounded shadow">
+    <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input formControlName="nombre" class="input border border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
+        <input type="date" formControlName="fechaNacimiento" class="border border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Género</label>
+        <select formControlName="genero" class="input border border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Selecciona</option>
+          <option value="masculino">Masculino</option>
+          <option value="femenino">Femenino</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Cédula</label>
+        <input formControlName="cedula" class="input border border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+        <input formControlName="telefono" class="input border border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Dirección</label>
+        <input formControlName="direccion" class="inputborder border-gray-300 shadow-md rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <div class="md:col-span-2 flex flex-col md:flex-row md:items-center gap-4 mt-4">
+        <div class="flex gap-4">
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            {{ editando ? 'Actualizar' : 'Crear' }}
+          </button>
+          <button *ngIf="editando" type="button" (click)="cancelarEdicion()" class="bg-gray-300 px-4 py-2 rounded">
+            Cancelar
+          </button>
+        </div>
+
+        <!-- Mensaje tipo toast inline -->
+        <div
+          *ngIf="mensaje"
+          [ngClass]="{
+            'bg-green-100 text-green-800 border-green-300': tipoMensaje === 'success',
+            'bg-red-100 text-red-800 border-red-300': tipoMensaje === 'error'
+          }"
+          class="mt-2 md:mt-0 px-4 py-2 border rounded shadow-sm text-sm"
+        >
+          {{ mensaje }}
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Lista -->
+  <div class="bg-white rounded shadow overflow-x-auto">
+    <table class="w-full text-sm text-left border-t">
+      <thead class="bg-gray-100 text-gray-600">
+        <tr>
+          <th class="p-2">Nombre</th>
+          <th class="p-2">Cédula</th>
+          <th class="p-2">Teléfono</th>
+          <th class="p-2">Dirección</th>
+          <th class="p-2 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paciente of pacientesPaginados | filtroPaciente:filtro" class="hover:bg-gray-50 border-t">
+          <td class="p-2">{{ paciente.nombre }}</td>
+          <td class="p-2">{{ paciente.cedula }}</td>
+          <td class="p-2">{{ paciente.telefono }}</td>
+          <td class="p-2">{{ paciente.direccion }}</td>
+          <td class="p-2 text-center space-x-2">
+            <button (click)="editarPaciente(paciente)" class="border px-4 bg-blue-600 text-white hover:underline">Editar</button>
+            <button (click)="eliminarPaciente(paciente.id)" class="border px-4 bg-red-500 text-white hover:underline">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex justify-center mt-4 space-x-2">
+      <button
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        (click)="cambiarPagina(i + 1)"
+        class="px-3 py-1 border rounded"
+        [ngClass]="{
+          'bg-blue-600 text-white': currentPage === i + 1,
+          'bg-white text-gray-800': currentPage !== i + 1
+        }"
+      >
+        {{ i + 1 }}
+      </button>
+    </div>
+  </div>
+</div>

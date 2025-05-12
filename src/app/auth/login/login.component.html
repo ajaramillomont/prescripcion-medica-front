@@ -1,0 +1,38 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="w-full max-w-md bg-white rounded-xl shadow p-8">
+    <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">correo electrónico</label>
+        <input formControlName="correo" type="correo"
+               class="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+               [class.border-red-500]="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched">
+        <p *ngIf="loginForm.get('correo')?.hasError('required') && loginForm.get('correo')?.touched"
+           class="text-sm text-red-600 mt-1">El correo es obligatorio.</p>
+        <p *ngIf="loginForm.get('correo')?.hasError('correo') && loginForm.get('correo')?.touched"
+           class="text-sm text-red-600 mt-1">Formato de correo inválido.</p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <input formControlName="password" type="password"
+               class="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+               [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <p *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"
+           class="text-sm text-red-600 mt-1">La contraseña es obligatoria.</p>
+      </div>
+
+      <button [disabled]="loading" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition flex justify-center items-center gap-2">
+        <svg *ngIf="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"></path>
+        </svg>
+        <span *ngIf="!loading">Iniciar sesión</span>
+        <span *ngIf="loading">Cargando...</span>
+      </button>
+
+      <p *ngIf="errorMessage" class="text-center text-red-600 mt-3 text-sm">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<nav class="bg-gray-800 relative z-50">
+  <div class="container mx-auto px-8 flex items-center justify-between py-5">
+    <!-- Columna 1: Logo -->
+    <div class="flex items-center">
+      <img src="assets/images/prescripciones-medicas.png" alt="Logo" class="h-10 w-auto" />
+    </div>
+
+    <!-- Columna 2: Menú navegación -->
+    <div class="hidden lg:flex items-center gap-8">
+      <a routerLink="/" class="text-white hover:text-blue-300">Inicio</a>
+      <a href="#servicios" class="text-white hover:text-blue-300">Servicios</a>
+      <a routerLink="/about-us" class="text-white hover:text-blue-300">Quienes somos</a>
+      <a href="#contacto" class="text-white hover:text-blue-300">Contáctanos</a>
+    </div>
+
+    <!-- Columna 3: Botones / Usuario -->
+    <div class="hidden lg:flex items-center gap-4 relative">
+      <ng-container *ngIf="!isLoggedIn; else loggedIn">
+        <a routerLink="/login" class="text-white border border-white py-2 px-4 rounded hover:bg-white hover:text-gray-800 transition">Iniciar sesión</a>
+        <a routerLink="/register" class="text-white bg-blue-600 py-2 px-4 rounded hover:bg-blue-700 transition">Registrarse</a>
+      </ng-container>
+
+      <ng-template #loggedIn>
+        <!-- Botón avatar + nombre -->
+        <button (click)="toggleUserMenu()" class="flex items-center gap-2 text-white focus:outline-none">
+          <img src="assets/images/avatar.png" alt="Avatar" class="w-8 h-8 rounded-full border border-white" />
+          <span class="font-medium">{{ userName }}</span>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 7l4.5 4.5L14.5 7H5.5z" /></svg>
+        </button>
+
+        <!-- Menú desplegable -->
+        <div *ngIf="isUserMenuOpen"
+             class="absolute right-0 top-14 w-64 bg-white text-black rounded shadow-lg z-50">
+          <div class="p-4 border-b">
+            <p class="font-semibold text-sm">{{ userName }}</p>
+            <p class="text-xs text-gray-600">{{ authService.getUser()?.correo }}</p>
+          </div>
+          <ul class="text-sm">
+            <li><a routerLink="/perfil" class="block px-4 py-2 hover:bg-gray-100">Perfil</a></li>
+            <li><a routerLink="/configuracion" class="block px-4 py-2 hover:bg-gray-100">Configuración</a></li>
+            <li><button (click)="logout()" class="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600">Cerrar sesión</button></li>
+          </ul>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Botón menú móvil -->
+    <div class="lg:hidden">
+      <button (click)="toggleMenu()" aria-label="Abrir menú">
+        <img src="assets/images/menu.png" alt="Menú" class="h-8 w-8" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú móvil -->
+  <div *ngIf="isMenuOpen" class="lg:hidden px-6 pt-4 pb-6 bg-gray-800 w-full flex flex-col items-center gap-4 text-center">
+    <a href="#" class="text-white w-full">Inicio</a>
+    <a href="#" class="text-white w-full">Servicios</a>
+    <a href="#somos" class="text-white w-full">Quiénes somos</a>
+    <a href="#" class="text-white w-full">Contactos</a>
+    <ng-container *ngIf="!isLoggedIn">
+      <a routerLink="/login" class="text-white w-full border border-white py-2 rounded hover:bg-white hover:text-gray-800 transition">Iniciar sesión</a>
+      <a routerLink="/register" class="text-white w-full bg-blue-500 py-2 rounded hover:bg-blue-600 transition">Registrarse</a>
+    </ng-container>
+    <ng-container *ngIf="isLoggedIn">
+      <a routerLink="/perfil" class="text-white w-full hover:bg-blue-600 py-2 rounded">Perfil</a>
+      <a routerLink="/configuracion" class="text-white w-full hover:bg-blue-600 py-2 rounded">Configuración</a>
+      <button (click)="logout()" class="text-red-500 border border-red-500 w-full py-2 rounded hover:bg-red-500 hover:text-white transition">Cerrar sesión</button>
+    </ng-container>
+  </div>
+</nav>
