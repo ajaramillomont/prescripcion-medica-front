@@ -15,7 +15,7 @@ export interface ContactMessage {
 })
 
 export class ContactService {
-    private apiUrl = environment.apiUrl + "/"+"contact";
+    private apiUrl = `${environment.apiUrl}/contact`;
 
   constructor(private http: HttpClient) { }
 
